@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Furrivo Paws – Project Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fdf6ec;
+    --warm: #f5ebe0;
+    --amber: #d68c45;
+    --amber-dark: #b56a2e;
+    --brown: #5a3e2b;
+    --brown-deep: #3e2a2a;
+    --sand: #e8d5b7;
+    --sand-light: #f0e3cc;
+    --sage: #8aad8a;
+    --text: #2e1f0f;
+    --muted: #8a6e55;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* ── COVER PAGE ── */
+  .cover {
+    min-height: 100vh;
+    background: var(--brown-deep);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 40px;
+    text-align: center;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(214,140,69,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 80% 100%, rgba(214,140,69,0.12) 0%, transparent 60%);
+  }
+
+  .cover-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image:
+      repeating-linear-gradient(45deg, #d68c45 0, #d68c45 1px, transparent 0, transparent 50%);
+    background-size: 24px 24px;
+  }
+
+  .cover-inner { position: relative; z-index: 1; max-width: 680px; }
+
+  .paw-icon {
+    font-size: 4rem;
+    margin-bottom: 24px;
+    display: block;
+    filter: drop-shadow(0 0 24px rgba(214,140,69,0.5));
+  }
+
+  .cover-tag {
+    display: inline-block;
+    background: rgba(214,140,69,0.2);
+    border: 1px solid rgba(214,140,69,0.4);
+    color: var(--amber);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 50px;
+    margin-bottom: 28px;
+  }
+
+  .cover h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+
+  .cover h1 span { color: var(--amber); }
+
+  .cover-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--sand);
+    font-size: 1.1rem;
+    margin-bottom: 48px;
+    opacity: 0.85;
+  }
+
+  .cover-divider {
+    width: 60px;
+    height: 2px;
+    background: var(--amber);
+    margin: 0 auto 40px;
+    border-radius: 2px;
+  }
+
+  .cover-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: center;
+    color: var(--sand-light);
+    font-size: 0.88rem;
+  }
+
+  .cover-meta-item { opacity: 0.8; }
+  .cover-meta-item strong { color: var(--amber); display: block; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+
+  .cover-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 44px;
+  }
+
+  .tech-badge {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #e0cdb8;
+    font-size: 0.75rem;
+    padding: 5px 14px;
+    border-radius: 4px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── LAYOUT ── */
+  .report-body {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 80px 40px 100px;
+  }
+
+  /* ── TABLE OF CONTENTS ── */
+  .toc-card {
+    background: var(--warm);
+    border: 1px solid var(--sand);
+    border-radius: 16px;
+    padding: 40px 48px;
+    margin-bottom: 72px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .toc-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--amber), var(--amber-dark));
+    border-radius: 4px 0 0 4px;
+  }
+
+  .toc-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    margin-bottom: 24px;
+    color: var(--brown-deep);
+  }
+
+  .toc-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 48px;
+  }
+
+  @media (max-width: 600px) { .toc-list { grid-template-columns: 1fr; } }
+
+  .toc-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--brown);
+    font-size: 0.88rem;
+  }
+
+  .toc-num {
+    background: var(--amber);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 72px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .section-num {
+    background: var(--amber);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--brown-deep);
+    font-weight: 700;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--sand);
+  }
+
+  p { color: #4a3020; margin-bottom: 14px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── OBJECTIVES ── */
+  .objectives-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+
+  .obj-card {
+    background: white;
+    border: 1px solid var(--sand);
+    border-radius: 12px;
+    padding: 20px 22px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .obj-icon {
+    background: var(--amber);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .obj-card p { font-size: 0.87rem; margin: 0; color: var(--brown); }
+
+  /* ── TECH STACK TABLE ── */
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(90,62,43,0.06);
+  }
+
+  .tech-table thead { background: var(--brown-deep); color: var(--sand-light); }
+  .tech-table thead th {
+    padding: 14px 20px;
+    text-align: left;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .tech-table tbody tr { border-bottom: 1px solid var(--sand); }
+  .tech-table tbody tr:last-child { border: none; }
+  .tech-table tbody tr:nth-child(even) { background: var(--warm); }
+  .tech-table tbody tr:nth-child(odd) { background: #fff; }
+  .tech-table td { padding: 13px 20px; font-size: 0.88rem; color: var(--brown); }
+  .tech-table td:first-child { font-weight: 600; color: var(--amber-dark); }
+
+  /* ── FILE STRUCTURE ── */
+  .file-tree {
+    background: var(--brown-deep);
+    border-radius: 14px;
+    padding: 28px 32px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.84rem;
+    color: #d4c4b0;
+    line-height: 2;
+  }
+
+  .file-tree .folder { color: var(--amber); font-weight: 600; }
+  .file-tree .file { color: #bde0bd; }
+  .file-tree .indent { padding-left: 22px; }
+  .file-tree .indent2 { padding-left: 44px; }
+
+  /* ── NAV STRUCTURE ── */
+  .nav-structure {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px;
+  }
+
+  .nav-card {
+    background: white;
+    border: 1px solid var(--sand);
+    border-top: 3px solid var(--amber);
+    border-radius: 10px;
+    padding: 18px 16px;
+    text-align: center;
+  }
+
+  .nav-card .nav-icon { font-size: 1.5rem; margin-bottom: 8px; }
+  .nav-card h4 { font-size: 0.9rem; color: var(--brown-deep); margin-bottom: 6px; }
+  .nav-card p { font-size: 0.78rem; color: var(--muted); margin: 0; }
+
+  /* ── CODE BLOCK ── */
+  .code-section {
+    background: #1e1410;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+
+  .code-header {
+    background: #2d1e14;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #3d2a1e;
+  }
+
+  .code-dots { display: flex; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #28ca41; }
+  .code-filename { color: #a08060; font-size: 0.8rem; font-family: monospace; margin-left: 6px; }
+
+  .code-body {
+    padding: 24px 28px;
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 0.78rem;
+    line-height: 1.8;
+    color: #c8b89a;
+    max-height: 340px;
+  }
+
+  .code-body .kw { color: #d68c45; }
+  .code-body .tag { color: #82aacc; }
+  .code-body .str { color: #8aad8a; }
+  .code-body .cm { color: #6a5040; font-style: italic; }
+  .code-body .prop { color: #d4a0d0; }
+  .code-body .val { color: #90c8a0; }
+
+  /* ── TESTING TABLE ── */
+  .test-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .test-table thead { background: var(--brown); color: var(--sand-light); }
+  .test-table thead th { padding: 13px 16px; text-align: left; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.05em; }
+  .test-table tbody tr { border-bottom: 1px solid var(--sand); }
+  .test-table tbody tr:nth-child(even) { background: var(--warm); }
+  .test-table tbody tr:nth-child(odd) { background: #fff; }
+  .test-table td { padding: 12px 16px; font-size: 0.85rem; color: var(--brown); }
+
+  .pass-badge {
+    background: #d4edda;
+    color: #155724;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 50px;
+    display: inline-block;
+  }
+
+  /* ── CHALLENGES ── */
+  .challenge-list { display: flex; flex-direction: column; gap: 16px; }
+
+  .challenge-item {
+    display: flex;
+    gap: 20px;
+    background: white;
+    border: 1px solid var(--sand);
+    border-radius: 12px;
+    padding: 20px 24px;
+    align-items: flex-start;
+  }
+
+  .ch-number {
+    background: var(--brown-deep);
+    color: var(--amber);
+    font-size: 0.75rem;
+    font-weight: 700;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .ch-content h4 { color: var(--brown-deep); font-size: 0.9rem; margin-bottom: 4px; }
+  .ch-content p { font-size: 0.85rem; color: var(--muted); margin: 0; }
+  .ch-arrow { color: var(--amber); margin-right: 4px; }
+
+  /* ── FUTURE ENHANCEMENTS ── */
+  .enhancements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+  }
+
+  .enhance-card {
+    background: white;
+    border: 1px solid var(--sand);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .enhance-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(to right, var(--amber), var(--amber-dark));
+  }
+
+  .enhance-icon { font-size: 1.6rem; margin-bottom: 10px; }
+  .enhance-card h4 { font-size: 0.88rem; color: var(--brown-deep); margin-bottom: 6px; }
+  .enhance-card p { font-size: 0.78rem; color: var(--muted); margin: 0; }
+
+  /* ── REFERENCES ── */
+  .ref-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ref-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.88rem;
+    color: var(--brown);
+    padding: 12px 18px;
+    background: white;
+    border: 1px solid var(--sand);
+    border-radius: 8px;
+  }
+
+  .ref-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--amber);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── FOOTER ── */
+  .report-footer {
+    text-align: center;
+    padding: 48px 40px;
+    background: var(--brown-deep);
+    color: var(--sand);
+    font-size: 0.82rem;
+  }
+
+  .report-footer strong { color: var(--amber); }
+
+  /* ── BLOCKQUOTE / ABSTRACT ── */
+  .abstract-box {
+    background: white;
+    border-left: 4px solid var(--amber);
+    border-radius: 0 12px 12px 0;
+    padding: 28px 32px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.02rem;
+    color: var(--brown);
+    line-height: 1.85;
+    box-shadow: 0 2px 12px rgba(214,140,69,0.08);
+  }
+
+  /* ── SCROLL HINT ── */
+  @media print {
+    .cover { min-height: 0; padding: 60px; }
+    .report-body { padding: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── COVER ── -->
+<div class="cover">
+  <div class="cover-pattern"></div>
+  <div class="cover-inner">
+    <span class="paw-icon">🐾</span>
+    <div class="cover-tag">Web Development Project Report</div>
+    <h1>Furrivo <span>Paws</span></h1>
+    <p class="cover-subtitle">A Pet Shop Website — Full Frontend Documentation</p>
+    <div class="cover-divider"></div>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><strong>Submitted By</strong>Ravreet Kaur</div>
+      <div class="cover-meta-item"><strong>Course</strong>Web Development Project</div>
+      <div class="cover-meta-item"><strong>Date</strong>15 April 2026</div>
+    </div>
+    <div class="cover-tech">
+      <span class="tech-badge">HTML5</span>
+      <span class="tech-badge">CSS3</span>
+      <span class="tech-badge">JavaScript ES6</span>
+      <span class="tech-badge">jQuery</span>
+      <span class="tech-badge">Font Awesome 6</span>
+      <span class="tech-badge">Google Fonts</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── BODY ── -->
+<div class="report-body">
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc-card">
+    <h2>📋 Table of Contents</h2>
+    <ul class="toc-list">
+      <li><span class="toc-num">1</span> Acknowledgment</li>
+      <li><span class="toc-num">2</span> Abstract</li>
+      <li><span class="toc-num">3</span> Introduction</li>
+      <li><span class="toc-num">4</span> Project Objectives</li>
+      <li><span class="toc-num">5</span> Technologies Used</li>
+      <li><span class="toc-num">6</span> System Architecture</li>
+      <li><span class="toc-num">7</span> Website Structure & Navigation</li>
+      <li><span class="toc-num">8</span> Complete Source Code</li>
+      <li><span class="toc-num">9</span> Screenshots & UI Description</li>
+      <li><span class="toc-num">10</span> Testing & Validation</li>
+      <li><span class="toc-num">11</span> Challenges & Solutions</li>
+      <li><span class="toc-num">12</span> Future Enhancements</li>
+      <li><span class="toc-num">13</span> Conclusion</li>
+      <li><span class="toc-num">14</span> References</li>
+    </ul>
+  </div>
+
+  <!-- 1. ACKNOWLEDGMENT -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>Acknowledgment</h2>
+      <div class="section-line"></div>
+    </div>
+    <p>I would like to express my sincere gratitude to my faculty supervisor, Prof. [Name], for their invaluable guidance and continuous support throughout this project. Their insights into front-end design and user experience greatly enhanced the quality of Furrivo Paws.</p>
+    <p>I also thank my peers who tested the website and provided constructive feedback. Special thanks to online communities such as Stack Overflow, W3Schools, and the jQuery documentation for helping resolve technical challenges.</p>
+    <p>I acknowledge the open-source resources including Google Fonts, Font Awesome, and royalty-free pet images from Unsplash that made the visual design of Furrivo Paws engaging and professional.</p>
+  </div>
+
+  <!-- 2. ABSTRACT -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>Abstract</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="abstract-box">
+      Furrivo Paws is a fully responsive, aesthetically pleasing pet shop website built using HTML5, CSS3, JavaScript, and jQuery. The site showcases pet products, adoption listings, grooming services, and a contact form. It features a dynamic product carousel, interactive hover effects, modal pop-ups, and a mobile-friendly navigation menu. The project demonstrates modern front-end development practices including DOM manipulation, event handling, and responsive design. This report documents the design, code implementation, testing, and future scope of Furrivo Paws.
+    </div>
+  </div>
+
+  <!-- 3. INTRODUCTION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>Introduction</h2>
+      <div class="section-line"></div>
+    </div>
+    <p>In the growing pet care industry, a visually appealing and functional website is essential for any pet shop to attract customers. Furrivo Paws was conceptualized to provide an online presence that reflects warmth, trust, and professionalism. The name <em>Furrivo</em> combines <strong>fur</strong> and <strong>vivo</strong> (meaning life), signifying a lively space for pets.</p>
+    <p>The website includes a hero section with call-to-action, a product gallery with add-to-cart simulation, service cards, a testimonials slider using jQuery, a contact form with validation, and a responsive navbar with a hamburger menu. This report explains every component with full source code, ensuring replicability.</p>
+  </div>
+
+  <!-- 4. OBJECTIVES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>Project Objectives</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="objectives-grid">
+      <div class="obj-card"><div class="obj-icon">🌐</div><p>Create a responsive, cross-browser compatible pet shop website.</p></div>
+      <div class="obj-card"><div class="obj-icon">⚡</div><p>Implement interactive elements using jQuery such as sliders, modals, and toggles.</p></div>
+      <div class="obj-card"><div class="obj-icon">📦</div><p>Showcase products and services in an organized, attractive layout.</p></div>
+      <div class="obj-card"><div class="obj-icon">✅</div><p>Validate user input in the contact form with helpful error messages.</p></div>
+      <div class="obj-card"><div class="obj-icon">🧹</div><p>Maintain clean, commented, and maintainable code throughout.</p></div>
+      <div class="obj-card"><div class="obj-icon">🎨</div><p>Deliver a visually refined design with pastel colors, rounded corners, and pet-focused imagery.</p></div>
+    </div>
+  </div>
+
+  <!-- 5. TECHNOLOGIES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>Technologies Used</h2>
+      <div class="section-line"></div>
+    </div>
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>Technology</th>
+          <th>Version / Source</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>HTML5</td><td>W3C Standard</td><td>Page structure and semantic markup</td></tr>
+        <tr><td>CSS3</td><td>W3C Standard</td><td>Styling, Flexbox, Grid, animations</td></tr>
+        <tr><td>JavaScript</td><td>ES6+</td><td>Dynamic content and form validation</td></tr>
+        <tr><td>jQuery</td><td>v3.6.0 (CDN)</td><td>DOM traversal, carousel, smooth scroll</td></tr>
+        <tr><td>Font Awesome</td><td>v6.0.0-beta3</td><td>Icons for services and social media</td></tr>
+        <tr><td>Google Fonts</td><td>Poppins</td><td>Typography throughout the site</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 6. SYSTEM ARCHITECTURE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <h2>System Architecture</h2>
+      <div class="section-line"></div>
+    </div>
+    <p>The project follows a <strong>client-side, static architecture</strong> with front-end only — no backend or database. The cart is simulated using browser alerts. jQuery is loaded via CDN for simplicity.</p>
+    <div style="margin-top: 20px;">
+      <div class="file-tree">
+        <div><span class="folder">📁 furrivo-paws/</span></div>
+        <div class="indent"><span class="file">📄 index.html</span> &nbsp;<span style="color:#6a5040;">← Main HTML file (single-page)</span></div>
+        <div class="indent"><span class="file">🎨 style.css</span> &nbsp;<span style="color:#6a5040;">← All styles, responsive rules</span></div>
+        <div class="indent"><span class="file">⚙️ script.js</span> &nbsp;<span style="color:#6a5040;">← jQuery interactions & validation</span></div>
+        <div class="indent"><span class="folder">📁 images/</span></div>
+        <div class="indent2"><span class="file">🖼 hero-bg.jpg</span></div>
+        <div class="indent2"><span class="file">🖼 product1.jpg &nbsp;&hellip;</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. STRUCTURE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <h2>Website Structure &amp; Navigation</h2>
+      <div class="section-line"></div>
+    </div>
+    <p>All pages are contained in a single HTML file using section IDs. Navigation uses smooth scroll via jQuery with a 70px offset for the sticky header.</p>
+    <div class="nav-structure" style="margin-top: 22px;">
+      <div class="nav-card"><div class="nav-icon">🏠</div><h4>Home</h4><p>Hero banner, featured carousel, testimonials</p></div>
+      <div class="nav-card"><div class="nav-icon">🛍️</div><h4>Products</h4><p>Grid of pet food, toys, and beds</p></div>
+      <div class="nav-card"><div class="nav-icon">✂️</div><h4>Services</h4><p>Grooming, vet check, boarding cards</p></div>
+      <div class="nav-card"><div class="nav-icon">📬</div><h4>Contact</h4><p>Validated form and map iframe</p></div>
+      <div class="nav-card"><div class="nav-icon">🔗</div><h4>Footer</h4><p>Social icons and copyright notice</p></div>
+    </div>
+  </div>
+
+  <!-- 8. SOURCE CODE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <h2>Complete Source Code</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <p style="margin-bottom: 18px;">Below are excerpts from each of the three source files. The full code is included in the project submission folder.</p>
+
+    <!-- index.html -->
+    <div class="code-section">
+      <div class="code-header">
+        <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="code-filename">index.html — Header &amp; Hero Section</span>
+      </div>
+      <div class="code-body"><pre><span class="cm">&lt;!-- Header --&gt;</span>
+<span class="tag">&lt;header&gt;</span>
+  <span class="tag">&lt;div</span> <span class="prop">class</span>=<span class="str">"logo"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;h1&gt;</span><span class="tag">&lt;i</span> <span class="prop">class</span>=<span class="str">"fas fa-paw"</span><span class="tag">&gt;&lt;/i&gt;</span> Furrivo Paws<span class="tag">&lt;/h1&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;nav&gt;</span>
+    <span class="tag">&lt;ul</span> <span class="prop">class</span>=<span class="str">"nav-links"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;li&gt;&lt;a</span> <span class="prop">href</span>=<span class="str">"#home"</span><span class="tag">&gt;</span>Home<span class="tag">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="tag">&lt;li&gt;&lt;a</span> <span class="prop">href</span>=<span class="str">"#products"</span><span class="tag">&gt;</span>Products<span class="tag">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="tag">&lt;li&gt;&lt;a</span> <span class="prop">href</span>=<span class="str">"#services"</span><span class="tag">&gt;</span>Services<span class="tag">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="tag">&lt;li&gt;&lt;a</span> <span class="prop">href</span>=<span class="str">"#contact"</span><span class="tag">&gt;</span>Contact<span class="tag">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="tag">&lt;/ul&gt;</span>
+    <span class="tag">&lt;div</span> <span class="prop">class</span>=<span class="str">"burger"</span><span class="tag">&gt;...&lt;/div&gt;</span>
+  <span class="tag">&lt;/nav&gt;</span>
+<span class="tag">&lt;/header&gt;</span>
+
+<span class="cm">&lt;!-- Hero --&gt;</span>
+<span class="tag">&lt;section</span> <span class="prop">id</span>=<span class="str">"home"</span> <span class="prop">class</span>=<span class="str">"hero"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="prop">class</span>=<span class="str">"hero-content"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;h2&gt;</span>Welcome to Furrivo Paws<span class="tag">&lt;/h2&gt;</span>
+    <span class="tag">&lt;p&gt;</span>Your one-stop shop for happy, healthy pets.<span class="tag">&lt;/p&gt;</span>
+    <span class="tag">&lt;button</span> <span class="prop">class</span>=<span class="str">"cta-btn"</span> <span class="prop">id</span>=<span class="str">"exploreBtn"</span><span class="tag">&gt;</span>Explore Now<span class="tag">&lt;/button&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/section&gt;</span></pre></div>
+    </div>
+
+    <!-- style.css -->
+    <div class="code-section">
+      <div class="code-header">
+        <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="code-filename">style.css — Core Styles &amp; Responsive</span>
+      </div>
+      <div class="code-body"><pre><span class="prop">body</span> {
+  <span class="kw">font-family:</span> <span class="str">'Poppins'</span>, sans-serif;
+  <span class="kw">scroll-behavior:</span> <span class="val">smooth</span>;
+  <span class="kw">background:</span> <span class="val">#fef9f0</span>;
+  <span class="kw">color:</span> <span class="val">#3e2a2a</span>;
+}
+
+<span class="prop">.hero</span> {
+  <span class="kw">height:</span> <span class="val">90vh</span>;
+  <span class="kw">background:</span> <span class="val">linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+              url('hero-bg.jpg')</span>;
+  <span class="kw">background-size:</span> <span class="val">cover</span>;
+  <span class="kw">display:</span> <span class="val">flex</span>;
+  <span class="kw">align-items:</span> <span class="val">center</span>;
+  <span class="kw">justify-content:</span> <span class="val">center</span>;
+}
+
+<span class="prop">.product-grid</span> {
+  <span class="kw">display:</span> <span class="val">grid</span>;
+  <span class="kw">grid-template-columns:</span> <span class="val">repeat(auto-fit, minmax(220px, 1fr))</span>;
+  <span class="kw">gap:</span> <span class="val">30px</span>;
+}
+
+<span class="cm">/* Responsive – 768px breakpoint */</span>
+<span class="prop">@media (max-width: 768px)</span> {
+  <span class="prop">.nav-links</span> {
+    <span class="kw">transform:</span> <span class="val">translateX(100%)</span>;
+    <span class="kw">transition:</span> <span class="val">0.4s</span>;
+  }
+  <span class="prop">.nav-links.nav-active</span> {
+    <span class="kw">transform:</span> <span class="val">translateX(0%)</span>;
+  }
+}</pre></div>
+    </div>
+
+    <!-- script.js -->
+    <div class="code-section">
+      <div class="code-header">
+        <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="code-filename">script.js — jQuery Interactions</span>
+      </div>
+      <div class="code-body"><pre><span class="kw">$(document).ready</span>(<span class="kw">function</span>() {
+
+  <span class="cm">// Hamburger menu toggle</span>
+  <span class="kw">$</span>(<span class="str">'.burger'</span>).<span class="kw">click</span>(<span class="kw">function</span>() {
+    <span class="kw">$</span>(<span class="str">'.nav-links'</span>).<span class="kw">toggleClass</span>(<span class="str">'nav-active'</span>);
+  });
+
+  <span class="cm">// Smooth scroll with header offset</span>
+  <span class="kw">$</span>(<span class="str">'nav a'</span>).<span class="kw">on</span>(<span class="str">'click'</span>, <span class="kw">function</span>(e) {
+    e.<span class="kw">preventDefault</span>();
+    <span class="kw">$</span>(<span class="str">'html, body'</span>).<span class="kw">animate</span>({
+      <span class="prop">scrollTop:</span> <span class="kw">$</span>(<span class="kw">this</span>.hash).<span class="kw">offset</span>().top - <span class="val">70</span>
+    }, <span class="val">800</span>);
+  });
+
+  <span class="cm">// Testimonial slider with auto-play</span>
+  <span class="kw">let</span> currentSlide = <span class="val">0</span>;
+  <span class="kw">const</span> slides = <span class="kw">$</span>(<span class="str">'.slide'</span>);
+
+  <span class="kw">function</span> showSlide(index) {
+    slides.<span class="kw">removeClass</span>(<span class="str">'active'</span>);
+    <span class="kw">$</span>(slides[index]).<span class="kw">addClass</span>(<span class="str">'active'</span>);
+  }
+
+  <span class="kw">setInterval</span>(() => {
+    currentSlide = (currentSlide + <span class="val">1</span>) % slides.length;
+    showSlide(currentSlide);
+  }, <span class="val">5000</span>);
+
+  <span class="cm">// Form validation</span>
+  <span class="kw">$</span>(<span class="str">'#contactForm'</span>).<span class="kw">submit</span>(<span class="kw">function</span>(e) {
+    e.<span class="kw">preventDefault</span>();
+    <span class="cm">// ... validation logic</span>
+  });
+});</pre></div>
+    </div>
+  </div>
+
+  <!-- 9. SCREENSHOTS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <h2>Screenshots &amp; UI Description</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="objectives-grid">
+      <div class="obj-card"><div class="obj-icon">🖥</div><p><strong>Fig. 1 – Hero Section:</strong> Full-width banner with pastel overlay, heading, and orange CTA button.</p></div>
+      <div class="obj-card"><div class="obj-icon">🛒</div><p><strong>Fig. 2 – Product Grid:</strong> Four cards with images, prices, and smooth lift-on-hover animation.</p></div>
+      <div class="obj-card"><div class="obj-icon">✂️</div><p><strong>Fig. 3 – Services:</strong> Grooming, Vet Check, and Boarding cards with Font Awesome icons and scale hover.</p></div>
+      <div class="obj-card"><div class="obj-icon">💬</div><p><strong>Fig. 4 – Testimonials:</strong> jQuery carousel with prev/next buttons and 5-second auto-slide.</p></div>
+      <div class="obj-card"><div class="obj-icon">📋</div><p><strong>Fig. 5 – Contact Form:</strong> Vertical layout with inline validation error and success messages.</p></div>
+      <div class="obj-card"><div class="obj-icon">📱</div><p><strong>Fig. 6 – Mobile View:</strong> Full-height slide-in hamburger menu; all elements stack responsively.</p></div>
+    </div>
+  </div>
+
+  <!-- 10. TESTING -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <h2>Testing &amp; Validation</h2>
+      <div class="section-line"></div>
+    </div>
+    <p style="margin-bottom: 20px;">Cross-browser testing performed on Chrome, Firefox, and Edge. All interactive elements function as expected.</p>
+    <table class="test-table">
+      <thead>
+        <tr><th>#</th><th>Test Case</th><th>Expected Result</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Click navigation links</td><td>Smooth scroll to section</td><td><span class="pass-badge">✓ Pass</span></td></tr>
+        <tr><td>2</td><td>Add to Cart button</td><td>Alert with product name</td><td><span class="pass-badge">✓ Pass</span></td></tr>
+        <tr><td>3</td><td>Submit empty form</td><td>Error: "All fields required"</td><td><span class="pass-badge">✓ Pass</span></td></tr>
+        <tr><td>4</td><td>Invalid email (no @)</td><td>Error: "Enter valid email"</td><td><span class="pass-badge">✓ Pass</span></td></tr>
+        <tr><td>5</td><td>Resize to 400px width</td><td>Hamburger menu appears</td><td><span class="pass-badge">✓ Pass</span></td></tr>
+        <tr><td>6</td><td>Testimonial prev/next</td><td>Slides change correctly</td><td><span class="pass-badge">✓ Pass</span></td></tr>
+        <tr><td>7</td><td>Hover on service card</td><td>Scale effect triggers</td><td><span class="pass-badge">✓ Pass</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 11. CHALLENGES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">11</div>
+      <h2>Challenges &amp; Solutions</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="challenge-list">
+      <div class="challenge-item">
+        <div class="ch-number">1</div>
+        <div class="ch-content">
+          <h4>Responsive navbar with jQuery toggle</h4>
+          <p><span class="ch-arrow">→</span> Used <code>toggleClass</code> and CSS <code>transform: translateX</code> to create a slide-in mobile menu without JavaScript positioning.</p>
+        </div>
+      </div>
+      <div class="challenge-item">
+        <div class="ch-number">2</div>
+        <div class="ch-content">
+          <h4>Autoplay slider interfering with manual navigation</h4>
+          <p><span class="ch-arrow">→</span> Used <code>setInterval</code> with an independent index variable, allowing manual prev/next clicks to update the same state without conflict.</p>
+        </div>
+      </div>
+      <div class="challenge-item">
+        <div class="ch-number">3</div>
+        <div class="ch-content">
+          <h4>Form not clearing after successful submission</h4>
+          <p><span class="ch-arrow">→</span> Called <code>$('#contactForm')[0].reset()</code> on the native DOM element after showing the success message.</p>
+        </div>
+      </div>
+      <div class="challenge-item">
+        <div class="ch-number">4</div>
+        <div class="ch-content">
+          <h4>Smooth scroll offset behind sticky header</h4>
+          <p><span class="ch-arrow">→</span> Subtracted 70px from the <code>scrollTop</code> target in the jQuery <code>animate</code> call to compensate for header height.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12. FUTURE ENHANCEMENTS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">12</div>
+      <h2>Future Enhancements</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="enhancements-grid">
+      <div class="enhance-card"><div class="enhance-icon">🗄️</div><h4>Backend Integration</h4><p>Node.js + MongoDB for messages and product inventory.</p></div>
+      <div class="enhance-card"><div class="enhance-icon">🔐</div><h4>User Auth</h4><p>Login & signup for a personalized cart experience.</p></div>
+      <div class="enhance-card"><div class="enhance-icon">💳</div><h4>Payment Gateway</h4><p>Stripe or PayPal integration for real purchases.</p></div>
+      <div class="enhance-card"><div class="enhance-icon">⚙️</div><h4>Admin Panel</h4><p>Dynamic product addition and editing for site owners.</p></div>
+      <div class="enhance-card"><div class="enhance-icon">🐾</div><h4>Adoption Gallery</h4><p>Real-time listings with filters for adopting pets.</p></div>
+      <div class="enhance-card"><div class="enhance-icon">🌙</div><h4>Dark Mode</h4><p>Toggle dark/light theme via JavaScript CSS variables.</p></div>
+      <div class="enhance-card"><div class="enhance-icon">💬</div><h4>Live Chat Bot</h4><p>jQuery chatbot for pet care and product queries.</p></div>
+    </div>
+  </div>
+
+  <!-- 13. CONCLUSION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">13</div>
+      <h2>Conclusion</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="abstract-box">
+      The Furrivo Paws website successfully demonstrates a modern, interactive, and visually appealing pet shop front-end. It leverages jQuery for DOM manipulation, sliders, and smooth interactions, while CSS3 Grid and Flexbox ensure full responsiveness. All objectives — including form validation, carousel, and mobile navigation — have been met. The project provides a solid foundation for a full-scale e-commerce platform for pet supplies and services. The combination of aesthetic design and functional code makes Furrivo Paws both beautiful and professional.
+    </div>
+  </div>
+
+  <!-- 14. REFERENCES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">14</div>
+      <h2>References</h2>
+      <div class="section-line"></div>
+    </div>
+    <ul class="ref-list">
+      <li><div class="ref-dot"></div>jQuery Documentation — api.jquery.com</li>
+      <li><div class="ref-dot"></div>Font Awesome Icons — fontawesome.com</li>
+      <li><div class="ref-dot"></div>W3Schools CSS Flexbox and Grid — w3schools.com</li>
+      <li><div class="ref-dot"></div>Google Fonts (Poppins) — fonts.google.com</li>
+      <li><div class="ref-dot"></div>MDN Web Docs — Form Validation and DOM Events</li>
+      <li><div class="ref-dot"></div>Placeholder Images — via.placeholder.com (for prototyping)</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="report-footer">
+  <p>🐾 <strong>Furrivo Paws</strong> — Web Development Project &nbsp;|&nbsp; Submitted by <strong>Ravreet Kaur</strong> &nbsp;|&nbsp; © 2026</p>
+</div>
+
+</body>
+</html>
